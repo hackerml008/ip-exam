@@ -1,0 +1,55 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate XML Document</title>
+</head>
+<body>
+    <h1>Create and Download XML Document</h1>
+    <button id="generateXml">Generate XML</button>
+
+    <script>
+        document.getElementById('generateXml').addEventListener('click', function() {
+            // Create a new XML document
+            const xmlDoc = document.implementation.createDocument("", "", null);
+            const usersElement = xmlDoc.createElement("users");
+            xmlDoc.appendChild(usersElement);
+
+            // Create user elements
+            for (let i = 1; i <= 10; i++) {
+                const userElement = xmlDoc.createElement("user");
+
+                const idElement = xmlDoc.createElement("id");
+                idElement.textContent = i;
+                userElement.appendChild(idElement);
+
+                const nameElement = xmlDoc.createElement("name");
+                nameElement.textContent = `User ${i}`;
+                userElement.appendChild(nameElement);
+
+                const emailElement = xmlDoc.createElement("email");
+                emailElement.textContent = `user${i}@example.com`;
+                userElement.appendChild(emailElement);
+
+                usersElement.appendChild(userElement);
+            }
+
+            // Serialize XML and create a Blob for download
+            const serializer = new XMLSerializer();
+            const xmlString = serializer.serializeToString(xmlDoc);
+            const blob = new Blob([xmlString], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+
+            // Create a link to download the file
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'users.xml';
+            a.click();
+
+            // Release the object URL after download
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>

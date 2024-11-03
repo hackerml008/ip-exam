@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoding and Decoding</title>
+</head>
+<body>
+    <h2>Base64 Encoding and Decoding</h2>
+
+    <label for="inputText">Enter Text:</label>
+    <input type="text" id="inputText" value="Hello!">
+    <button onclick="encodeAndDecode()">Encode & Decode</button>
+
+    <h3>Results:</h3>
+    <p><strong>Encoded:</strong> <span id="encodedText"></span></p>
+    <p><strong>Decoded:</strong> <span id="decodedText"></span></p>
+
+    <script>
+        function encodeAndDecode() {
+            const originalText = document.getElementById("inputText").value;
+            // Encode to Base64
+            const encodedText = btoa(originalText);
+            // Decode from Base64
+            const decodedText = atob(encodedText);
+
+            // Display the results
+            document.getElementById("encodedText").innerText = encodedText;
+            document.getElementById("decodedText").innerText = decodedText;
+        }
+    </script>
+</body>
+</html>

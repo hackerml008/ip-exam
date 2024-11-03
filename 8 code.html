@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap; /* To maintain formatting */
+        }
+    </style>
+</head>
+<body>
+    <h1>Fetch User Details</h1>
+    <input type="text" id="userId" placeholder="Enter User ID">
+    <button onclick="fetchUserDetails()">Fetch User</button>
+    
+    <div class="result" id="result"></div>
+
+    <h2>User Data (XML Format)</h2>
+    <pre>
+&lt;users&gt;
+    &lt;user id="1"&gt;
+        &lt;name&gt;John Doe&lt;/name&gt;
+        &lt;email&gt;john.doe@example.com&lt;/email&gt;
+    &lt;/user&gt;
+    &lt;user id="2"&gt;
+        &lt;name&gt;Jane Smith&lt;/name&gt;
+        &lt;email&gt;jane.smith@example.com&lt;/email&gt;
+    &lt;/user&gt;
+    &lt;user id="3"&gt;
+        &lt;name&gt;Alice Johnson&lt;/name&gt;
+        &lt;email&gt;alice.johnson@example.com&lt;/email&gt;
+    &lt;/user&gt;
+&lt;/users&gt;
+    </pre>
+
+    <script>
+        function fetchUserDetails() {
+            const userId = document.getElementById('userId').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Clear previous results
+
+            // Sample XML data as a string
+            const xmlData = `
+            <users>
+                <user id="1">
+                    <name>John Doe</name>
+                    <email>john.doe@example.com</email>
+                </user>
+                <user id="2">
+                    <name>Jane Smith</name>
+                    <email>jane.smith@example.com</email>
+                </user>
+                <user id="3">
+                    <name>Alice Johnson</name>
+                    <email>alice.johnson@example.com</email>
+                </user>
+            </users>`;
+
+            // Parse the XML string
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+            const users = xmlDoc.getElementsByTagName('user');
+            let userFound = false;
+
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].getAttribute('id') === userId) {
+                    const name = users[i].getElementsByTagName('name')[0].textContent;
+                    const email = users[i].getElementsByTagName('email')[0].textContent;
+                    resultDiv.innerHTML = `<strong>User Details:</strong><br>
+                                           ID: ${userId}<br>
+                                           Name: ${name}<br>
+                                           Email: ${email}`;
+                    userFound = true;
+                    break;
+                }
+            }
+
+            if (!userFound) {
+                resultDiv.innerHTML = 'User not found.';
+            }
+        }
+    </script>
+</body>
+</html>

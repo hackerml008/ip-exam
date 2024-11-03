@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Tracking Example</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get elements
+            let usernameInput = document.getElementById('username');
+            let hitCountDisplay = document.getElementById('hitCountDisplay');
+
+            // Retrieve the hit count from session storage or initialize it
+            let hitCount = sessionStorage.getItem('hitCount') || 0;
+            let username = sessionStorage.getItem('username');
+
+            // Update the hit count
+            hitCount++;
+            sessionStorage.setItem('hitCount', hitCount);
+
+            // Check if username is already set
+            if (!username) {
+                // Set username in session storage if not already set
+                username = usernameInput.value || '';
+                sessionStorage.setItem('username', username);
+            }
+
+            // Display the hit count and user information
+            hitCountDisplay.innerText = `Username: ${username} - You have visited this page ${hitCount} time(s).`;
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <h1>Session Tracking with Hit Count</h1>
+        <form id="userForm" onsubmit="return false;">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <button type="button" onclick="setUserInfo()">Set User Info</button>
+        </form>
+        <div id="hitCountDisplay"></div>
+    </div>
+
+    <script>
+        function setUserInfo() {
+            let usernameInput = document.getElementById('username');
+
+            // Store username in session storage
+            sessionStorage.setItem('username', usernameInput.value);
+
+            // Trigger the hit count display update
+            document.dispatchEvent(new Event('DOMContentLoaded'));
+        }
+    </script>
+</body>
+</html>
